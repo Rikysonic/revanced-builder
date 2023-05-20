@@ -31,9 +31,10 @@ async function overWriteJarNames(fileName) {
  */
 async function getDownloadLink(json) {
   const res = await fetch(
-    `https://api.github.com/repos/${json.owner}/${json.repo}/releases/latest`
+    `https://api.github.com/repos/${json.owner}/${json.repo}/releases`
   );
-  const latestRelease = await res.json();
+  const releases = await res.json();
+  const latestRelease = releases[0];
 
   const json_ = {
     version: latestRelease?.tag_name,
@@ -45,7 +46,7 @@ async function getDownloadLink(json) {
     /** @type {{ browser_download_url: string }[]} */
     const assets = [];
     const releasesPage = await fetch(
-      `https://github.com/${json.owner}/${json.repo}/releases/latest`
+      `https://github.com/${json.owner}/${json.repo}/releases`
     );
 
     if (!releasesPage.ok)
